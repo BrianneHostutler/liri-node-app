@@ -1,1 +1,1 @@
-# liri-node-app
+Liri is a node.js app that can do a variety of different functions.
