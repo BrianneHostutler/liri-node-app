@@ -1,26 +1,15 @@
-// At the top of the liri.js file make it so you grab the data 
-// from keys.js and store it into a variable to use
-
-// Make it so liri.js can take in one of the following arguments
-
-// my-tweets
-
-// spotify-this-song
-
-// movie-this
-
-// do-what-it-says
-
-// node liri.js my-tweets:
 var fs = require('fs');
-var twitterKeys = require("./keys.js");
+var twitterKeys = require("keys.js");
 var twitter = require('twitter');
 var spotify = require('spotify');
 var request = require('request');
 
+//needed for switch: gets whatever is at position 2, 
+// so switch knows which function to run 
 var action = process.argv[2];
 
-switch(action) {
+//creates switch so that you can run each function seperately
+switch (action) {
     case 'my-tweets': myTweets(); break;
     case 'spotify-this-song': spotifyThisSong(); break;
     case 'movie-this': movieThis(); break;
@@ -37,13 +26,13 @@ function myTweets(userName) {
 	  access_token_secret: keysJs.twitterKeys.access_token_secret
 	});
 
-	userName= process.argv[3];
-
+	var userName = 'bnhoss';
+	userName = params[1];
 	var params = {screen_name: userName};
 		client.get('statuses/user_timeline', params, function(error, tweets, response){
 		  if (!error) {
 		  	for (var i = 0; i < 20; i++) {
-		    console.log(tweets);
+		    console.log(tweets[i]);
 			}
 		  }
 		});
@@ -71,7 +60,7 @@ function spotifyThisSong(song) {
 	});
 }
 
-//
+//displays info about a movie
 function movieThis() {
 
 	movie = process.argv[3];
@@ -95,15 +84,17 @@ function movieThis() {
 };
 
 function doWhatItSays() {
-  fs.readFile("./random.txt", "utf8", function(error, data) {
-    if(error) {
-      console.log('Error occurred: ' + error);
-      return;
-    }
-    data = data.split(',');
-    spotifyThisSong();
-  })
+	fs.readFile('random.txt', 'utf8', function(error, data){
+		if (!error) {
+			doWhat = data.split(',');
+			spotifyThisSong(doWhat[0], doWhat[1]);
+		} else {
+			console.log('Error occurred' + error);
+		}
+	});
 };
+
+
 
 // var request = require('request');
 
